@@ -12,7 +12,7 @@
 * 🔁 Real-time **spline interpolation** and smoothing for precise curve shaping  
 * ⬇️ **Downsampling** of dense waveforms to simplify editing and manual tuning 
 * 🎚️ Multi-frequency **vibration synthesis** using envelope-based amplitude modulation  
-* 📊 Live **frequency spectrum preview** using discrete Fourier transform (DFT)  
+* 📊 Live **frequency spectrum preview** using Fast Fourier transform (FFT)  
 * 📁 Import and export of waveform data in **Excel and CSV** formats  
 * 🔧 Export-ready signals for deployment on **haptic actuators** (e.g., Haptuator, torque simulator)  
 * 💡 Designed for **researchers, engineers, and UI/UX designers** working in haptics and robotics.
