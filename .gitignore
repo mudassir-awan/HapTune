@@ -1,0 +1,57 @@
+<<<<<<< HEAD
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore JetBrains project files
+.idea/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore log files
+*.log
+
+# Ignore compiled Python extensions
+*.so
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore package files
+*.egg-info/
+build/
+dist/
+=======
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore JetBrains project files
+.idea/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore log files
+*.log
+
+# Ignore compiled Python extensions
+*.so
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore package files
+*.egg-info/
+build/
+dist/
+>>>>>>> 47ef10be98655a08413a4192e15d02179cc85eaa
