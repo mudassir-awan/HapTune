@@ -100,7 +100,4 @@ A demonstration of this tool has been submitted to **World Haptics Conference 20
 
 ## ✉️ Contact
 
-For questions, feedback, or academic inquiries:
-
-* Mudassir Ibrahim Awan
-* [Scholar](https://scholar.google.com/citations?hl=en&user=DJKWlwoAAAAJ) | [LinkedIn](https://www.linkedin.com/in/mudassir-awan/) | [Twitter or X](https://x.com/mudassirIA) 
+For questions, bug reports, or feature suggestions, please [open a GitHub Issue](https://github.com/mudassir-awan/HapTune/issues).
