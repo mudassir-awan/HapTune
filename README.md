@@ -88,7 +88,7 @@ HapTune is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE)
 See [AUTHORS.md](AUTHORS.md) for a full list of contributors and roles.
 
 HapTune originated from academic research conducted at **Kyung Hee University**.  
-It was solely developed and programmed by **Mudassir Ibrahim Awan** as part of his PhD research, with academic supervision by **Prof. Seokhee Jeon** during the early stages.
+It was developed and programmed by **Mudassir Ibrahim Awan** as part of his PhD research, with academic supervision by **Prof. Seokhee Jeon** during the early stages.
 
 ---
 
