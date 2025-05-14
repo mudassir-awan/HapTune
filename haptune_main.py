@@ -352,45 +352,65 @@ class AxisSettingsDialog(QDialog):
 
         layout = QVBoxLayout()
 
-        # X settings
+        # Get current axis limits and tick spacing
+        canvas = self.parent.plot_canvas
+        current_xmin = canvas.left_bound
+        current_xmax = canvas.right_bound
+        current_ymin = canvas.bottom_bound
+        current_ymax = canvas.top_bound
+
+        xticks = canvas.axes.get_xticks()
+        yticks = canvas.axes.get_yticks()
+        x_tick = round(xticks[1] - xticks[0], 2) if len(xticks) > 1 else 1
+        y_tick = round(yticks[1] - yticks[0], 2) if len(yticks) > 1 else 1
+
+        # --- X Settings ---
         x_layout = QHBoxLayout()
+
         self.xmin_input = QDoubleSpinBox()
-        self.xmin_input.setRange(-1000, 1000)
+        self.xmin_input.setRange(-10000, 10000)
+        self.xmin_input.setValue(current_xmin)
         self.xmin_input.setPrefix('Xmin: ')
         x_layout.addWidget(self.xmin_input)
 
         self.xmax_input = QDoubleSpinBox()
-        self.xmax_input.setRange(-1000, 1000)
+        self.xmax_input.setRange(-10000, 10000)
+        self.xmax_input.setValue(current_xmax)
         self.xmax_input.setPrefix('Xmax: ')
         x_layout.addWidget(self.xmax_input)
 
         self.x_tick_input = QDoubleSpinBox()
-        self.x_tick_input.setRange(0.1, 1000)
+        self.x_tick_input.setRange(0.01, 1000)
+        self.x_tick_input.setValue(x_tick)
         self.x_tick_input.setPrefix('Tick: ')
         x_layout.addWidget(self.x_tick_input)
 
         layout.addLayout(x_layout)
 
-        # Y settings
+        # --- Y Settings ---
         y_layout = QHBoxLayout()
+
         self.ymin_input = QDoubleSpinBox()
-        self.ymin_input.setRange(-1000, 1000)
+        self.ymin_input.setRange(-10000, 10000)
+        self.ymin_input.setValue(current_ymin)
         self.ymin_input.setPrefix('Ymin: ')
         y_layout.addWidget(self.ymin_input)
 
         self.ymax_input = QDoubleSpinBox()
-        self.ymax_input.setRange(-1000, 1000)
+        self.ymax_input.setRange(-10000, 10000)
+        self.ymax_input.setValue(current_ymax)
         self.ymax_input.setPrefix('Ymax: ')
         y_layout.addWidget(self.ymax_input)
 
         self.y_tick_input = QDoubleSpinBox()
-        self.y_tick_input.setRange(0.1, 1000)
+        self.y_tick_input.setRange(0.01, 1000)
+        self.y_tick_input.setValue(y_tick)
         self.y_tick_input.setPrefix('Tick: ')
         y_layout.addWidget(self.y_tick_input)
 
         layout.addLayout(y_layout)
 
-        # OK Button
+        # --- Apply Button ---
         apply_button = QPushButton("Apply", self)
         apply_button.clicked.connect(self.apply_changes)
         layout.addWidget(apply_button)
@@ -1246,10 +1266,10 @@ class App(QMainWindow):
             angles = [p[0] for p in self.plot_canvas.points]
             max_angle = max(angles, default=0)
 
-            # Check if the maximum angle is less than 62 degrees
-            if max_angle < self.plot_canvas.right_bound:
-                QMessageBox.warning(self, 'Angle Requirement', 'Please make sure to go beyond 62 degrees.')
-                return
+            # # Check if the maximum angle is less than 62 degrees
+            # if max_angle < self.plot_canvas.right_bound:
+            #     QMessageBox.warning(self, 'Angle Requirement', 'Please make sure to go beyond 62 degrees.')
+            #     return
 
             # Debugging: Print the length of the interpolated points
             if hasattr(self.plot_canvas, 'interpolated_points'):
@@ -1257,13 +1277,13 @@ class App(QMainWindow):
             else:
                 print("No interpolated points attribute found.")
 
-            # Check if interpolation has been done and if the interpolated points array size is large enough
-            if (not hasattr(self.plot_canvas, 'interpolated_points') or
-                    not self.plot_canvas.interpolated_points or
-                    len(self.plot_canvas.interpolated_points) < 620):  # Ensure interpolation has at least 620 points
-                QMessageBox.warning(self, 'Interpolation Required',
-                                    'Please interpolate sufficiently before saving the data.')
-                return
+            # # Check if interpolation has been done and if the interpolated points array size is large enough
+            # if (not hasattr(self.plot_canvas, 'interpolated_points') or
+            #         not self.plot_canvas.interpolated_points or
+            #         len(self.plot_canvas.interpolated_points) < 620):  # Ensure interpolation has at least 620 points
+            #     QMessageBox.warning(self, 'Interpolation Required',
+            #                         'Please interpolate sufficiently before saving the data.')
+            #     return
 
             # Initialize csv_file_path at the beginning to ensure it's always defined
             csv_file_path = file_path.replace('.xlsx', '_csv.csv')  # Assume .csv extension if saving fails
@@ -1271,16 +1291,19 @@ class App(QMainWindow):
             # Create a Pandas Excel writer using openpyxl as the engine.
             with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
                 # Save interpolated points first to make it Sheet 1
-                interpolated_data = {
-                    'angle': [round(p[0], 2) for p in self.plot_canvas.interpolated_points],
-                    'amplitude': [round(p[1], 2) for p in self.plot_canvas.interpolated_points]
-                }
-                df_interpolated = pd.DataFrame(interpolated_data)
-                df_interpolated.to_excel(writer, sheet_name='Interpolated Points', index=False)
+                if hasattr(self.plot_canvas, 'interpolated_points') and self.plot_canvas.interpolated_points:
+                    interpolated_data = {
+                        'sample': [round(p[0], 2) for p in self.plot_canvas.interpolated_points],
+                        'amplitude': [round(p[1], 2) for p in self.plot_canvas.interpolated_points]
+                    }
+                    df_interpolated = pd.DataFrame(interpolated_data)
+                    df_interpolated.to_excel(writer, sheet_name='Interpolated Points', index=False)
+                else:
+                    print("No interpolated data found. Skipping that sheet.")
 
                 # Save original points next, rounded to 2 decimal points
                 original_data = {
-                    'angle': [round(p[0], 2) for p in self.plot_canvas.points],
+                    'sample': [round(p[0], 2) for p in self.plot_canvas.points],
                     'amplitude': [round(p[1], 2) for p in self.plot_canvas.points]
                 }
                 df_original = pd.DataFrame(original_data)
@@ -1290,6 +1313,42 @@ class App(QMainWindow):
             print(f"Data saved successfully to {file_path}")
         except Exception as e:
             print(f"Error saving to Excel or CSV: {e}")
+
+    def auto_adjust_axes(self):
+        if not self.plot_canvas.points:
+            return
+
+        x_vals, y_vals = zip(*self.plot_canvas.points)
+        x_min, x_max = min(x_vals), max(x_vals)
+        y_min, y_max = min(y_vals), max(y_vals)
+
+        # Add 5% margin
+        x_margin = (x_max - x_min) * 0.05 if x_max != x_min else 1
+        y_margin = (y_max - y_min) * 0.05 if y_max != y_min else 1
+        x_min -= x_margin
+        x_max += x_margin
+        y_min -= y_margin
+        y_max += y_margin
+
+        # Round axis limits to nearest nice values
+        x_min = round(x_min, 2)
+        x_max = round(x_max, 2)
+        y_min = round(y_min, 2)
+        y_max = round(y_max, 2)
+
+        # Compute rounded tick intervals (max 10 ticks)
+        def compute_tick_interval(min_val, max_val):
+            range_val = max_val - min_val
+            raw_tick = range_val / 10
+            magnitude = 10 ** np.floor(np.log10(raw_tick))
+            tick = round(raw_tick / magnitude) * magnitude
+            return round(tick, 2)
+
+        x_tick = compute_tick_interval(x_min, x_max)
+        y_tick = compute_tick_interval(y_min, y_max)
+
+        self.plot_canvas.set_axis_limits(x_min, x_max, y_min, y_max)
+        self.plot_canvas.set_tick_intervals(x_tick, y_tick)
 
     def save_data_to_csv(self, file_path):
         try:
@@ -1302,11 +1361,11 @@ class App(QMainWindow):
             angles = [p[0] for p in self.plot_canvas.points]
             max_angle = max(angles, default=0)
 
-            # Check if the maximum angle is less than 62 degrees
-            if max_angle < self.plot_canvas.right_bound:
-                QMessageBox.warning(self, 'Angle Requirement',
-                                    'Please make sure the profile extends beyond 62 degrees.')
-                return
+            # # Check if the maximum angle is less than 62 degrees
+            # if max_angle < self.plot_canvas.right_bound:
+            #     QMessageBox.warning(self, 'Angle Requirement',
+            #                         'Please make sure the profile extends beyond 62 degrees.')
+            #     return
 
             # Debugging: Print the length of the interpolated points
             if hasattr(self.plot_canvas, 'interpolated_points'):
@@ -1314,17 +1373,21 @@ class App(QMainWindow):
             else:
                 print("No interpolated points attribute found.")
 
-            # Check if interpolation has been done and if the interpolated points array size is large enough
-            if (not hasattr(self.plot_canvas, 'interpolated_points') or
-                    not self.plot_canvas.interpolated_points or
-                    len(self.plot_canvas.interpolated_points) < 620):  # Ensure interpolation has at least 620 points
-                QMessageBox.warning(self, 'Interpolation Required',
-                                    'Please perform sufficient interpolation before saving the data.')
-                return
+            # # Check if interpolation has been done and if the interpolated points array size is large enough
+            # if (not hasattr(self.plot_canvas, 'interpolated_points') or
+            #         not self.plot_canvas.interpolated_points or
+            #         len(self.plot_canvas.interpolated_points) < 620):  # Ensure interpolation has at least 620 points
+            #     QMessageBox.warning(self, 'Interpolation Required',
+            #                         'Please perform sufficient interpolation before saving the data.')
+            #     return
 
             # Prepare data for custom CSV format, rounded to 2 decimal points
-            angle_values = [round(p[0], 2) for p in self.plot_canvas.interpolated_points]
-            amplitude_values = [round(p[1], 2) for p in self.plot_canvas.interpolated_points]
+            if hasattr(self.plot_canvas, 'interpolated_points') and self.plot_canvas.interpolated_points:
+                angle_values = [round(p[0], 2) for p in self.plot_canvas.interpolated_points]
+                amplitude_values = [round(p[1], 2) for p in self.plot_canvas.interpolated_points]
+            else:
+                angle_values = [round(p[0], 2) for p in self.plot_canvas.points]
+                amplitude_values = [round(p[1], 2) for p in self.plot_canvas.points]
 
             # Construct CSV content manually with curly brackets
             csv_content = f"angle [] = {{{', '.join(map(str, angle_values))}}}\n"
@@ -1350,20 +1413,20 @@ class App(QMainWindow):
         angles = [p[0] for p in self.plot_canvas.points]
         max_angle = max(angles, default=0)
 
-        # Check if the maximum angle is less than 62 degrees
-        if max_angle < self.plot_canvas.right_bound:
-            QMessageBox.warning(self, 'Angle Requirement', 'Please make sure the profile extends beyond 62 degrees.')
-            return
+        # # Check if the maximum angle is less than 62 degrees
+        # if max_angle < self.plot_canvas.right_bound:
+        #     QMessageBox.warning(self, 'Angle Requirement', 'Please make sure the profile extends beyond 62 degrees.')
+        #     return
 
         # Check if interpolation has been done and if there are sufficient interpolated points
-        if not hasattr(self.plot_canvas, 'interpolated_points') or not self.plot_canvas.interpolated_points:
-            QMessageBox.warning(self, 'Interpolation Required', 'Please perform interpolation before saving the data.')
-            return
+        # if not hasattr(self.plot_canvas, 'interpolated_points') or not self.plot_canvas.interpolated_points:
+        #     QMessageBox.warning(self, 'Interpolation Required', 'Please perform interpolation before saving the data.')
+        #     return
 
-        # Check if interpolation points are sufficient
-        if len(self.plot_canvas.interpolated_points) < 620:
-            QMessageBox.warning(self, 'Insufficient Interpolation', 'Interpolation must generate at least 620 points.')
-            return
+        # # Check if interpolation points are sufficient
+        # if len(self.plot_canvas.interpolated_points) < 620:
+        #     QMessageBox.warning(self, 'Insufficient Interpolation', 'Interpolation must generate at least 620 points.')
+        #     return
 
         # Only show the save file dialog if all conditions above are satisfied
         fileName, _ = QFileDialog.getSaveFileName(self, "Save to CSV", "",
@@ -1382,20 +1445,20 @@ class App(QMainWindow):
         angles = [p[0] for p in self.plot_canvas.points]
         max_angle = max(angles, default=0)
 
-        # Check if the maximum angle is less than 62 degrees
-        if max_angle < self.plot_canvas.right_bound:
-            QMessageBox.warning(self, 'Angle Requirement', 'Please make sure to go beyond 62 degrees.')
-            return
+        # # Check if the maximum angle is less than 62 degrees
+        # if max_angle < self.plot_canvas.right_bound:
+        #     QMessageBox.warning(self, 'Angle Requirement', 'Please make sure to go beyond 62 degrees.')
+        #     return
 
         # Check if interpolation has been done and if there are sufficient interpolated points
-        if not hasattr(self.plot_canvas, 'interpolated_points') or not self.plot_canvas.interpolated_points:
-            QMessageBox.warning(self, 'Interpolation Required', 'Please perform interpolation before saving the data.')
-            return
+        # if not hasattr(self.plot_canvas, 'interpolated_points') or not self.plot_canvas.interpolated_points:
+        #     QMessageBox.warning(self, 'Interpolation Required', 'Please perform interpolation before saving the data.')
+        #     return
 
-        # Check if interpolation points are sufficient
-        if len(self.plot_canvas.interpolated_points) < 620:
-            QMessageBox.warning(self, 'Insufficient Interpolation', 'Interpolation must generate at least 620 points.')
-            return
+        # # Check if interpolation points are sufficient
+        # if len(self.plot_canvas.interpolated_points) < 620:
+        #     QMessageBox.warning(self, 'Insufficient Interpolation', 'Interpolation must generate at least 620 points.')
+        #     return
 
         # Only show the save file dialog if all conditions above are satisfied
         fileName, _ = QFileDialog.getSaveFileName(self, "Save to Excel", "",
@@ -1509,6 +1572,8 @@ class App(QMainWindow):
 
             # Update the QLineEdit with the file name
             self.loaded_file_line_edit.setText(file_path)
+            self.auto_adjust_axes()
+
 
         except Exception as e:
             print(f"Error loading from Excel: {e}")
