@@ -80,7 +80,7 @@ HapTune/
 
 ## 🌍 Citation / Demo Submission
 
-A demonstration of this tool has been submitted to **World Haptics Conference 2025**. For citation details, please contact the author or check the official publication (if accepted).
+A demonstration of this tool has been accepted in **World Haptics Conference 2025**. For citation details, please contact the author or check the official publication (if accepted).
 
 ---
 
