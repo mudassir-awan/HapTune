@@ -88,8 +88,6 @@ A demonstration of this tool has been accepted in **World Haptics Conference 202
 
 HapTune is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for full terms.
 
-> 🔒 **Intended Use Notice:**  
-> Although the software is Apache-licensed, it is primarily intended for **academic research and non-commercial applications**. For commercial use or licensing inquiries, please contact the author directly.
 
 ---
 ## 👨‍🔬 Authors
