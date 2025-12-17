@@ -111,10 +111,10 @@ HapTune was developed by **[Mudassir Ibrahim Awan](https://scholar.google.com/ci
 
 > 🧭 Acknowledgments:  
 > Special thanks to **[Prof. Seokhee Jeon](http://haptics.khu.ac.kr/jeon/)** for his guidance during the development phase of this tool.
----
+
 -->
 
-
+---
 
 ## ✉️ Contact
 
