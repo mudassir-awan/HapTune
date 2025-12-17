@@ -82,6 +82,7 @@ HapTune/
 
 A demonstration of this tool has been accepted in **World Haptics Conference 2025**. 
 
+```
 @misc{awan_2025_16355705,
   author       = {Awan, Mudassir Ibrahim and
                   Jeon, Seokhee},
@@ -95,6 +96,7 @@ A demonstration of this tool has been accepted in **World Haptics Conference 202
   url          = {https://doi.org/10.5281/zenodo.16355705},
 }
 
+```
 ---
 
 ## 📑 License
