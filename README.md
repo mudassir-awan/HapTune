@@ -79,22 +79,22 @@ HapTune/
 ---
 
 ## 🌍 Citation / Demo Submission
+A demonstration of this tool has been accepted at World Haptics Conference (WHC) 2025. Since demonstration papers are not formally archived, a citable archival version has been made available via [Zenodo](https://doi.org/10.5281/zenodo.16355705).
 
-A demonstration of this tool has been accepted in **World Haptics Conference 2025**. 
+This Zenodo record serves as a persistent reference for the demo and associated software.
+
 
 ```
 @misc{awan_2025_16355705,
-  author       = {Awan, Mudassir Ibrahim and
-                  Jeon, Seokhee},
-  title        = {HapTune: An Open-Source Visual Tool for Designing
-                   User-Defined Haptic Signals
-                  },
-  month        = jul,
-  year         = 2025,
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.16355705},
-  url          = {https://doi.org/10.5281/zenodo.16355705},
+  author    = {Awan, Mudassir Ibrahim and Jeon, Seokhee},
+  title     = {HapTune: An Open-Source Visual Tool for Designing User-Defined Haptic Signals},
+  year      = {2025},
+  month     = jul,
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.16355705},
+  url       = {https://doi.org/10.5281/zenodo.16355705}
 }
+
 
 ```
 ---
