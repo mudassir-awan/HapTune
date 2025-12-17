@@ -94,8 +94,6 @@ This Zenodo record serves as a persistent reference for the demo and associated 
   doi       = {10.5281/zenodo.16355705},
   url       = {https://doi.org/10.5281/zenodo.16355705}
 }
-
-
 ```
 ---
 
