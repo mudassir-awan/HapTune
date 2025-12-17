@@ -120,4 +120,4 @@ HapTune was developed by **[Mudassir Ibrahim Awan](https://scholar.google.com/ci
 
 For questions, suggestions, or feedback:
 
-Open an issue in the [GitHub Issues](https://github.com/mudassir-awan/HapTune/issues) section of this repository.
+Open an issue in the [GitHub Issues](https://github.com/mudassir-awan/HapTune/issues) section of this repository or contat the author **[Mudassir Ibrahim Awan](https://scholar.google.com/citations?user=DJKWlwoAAAAJ)**.
