@@ -103,13 +103,14 @@ HapTune is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE)
 
 
 ---
+<!--
 ## 👨‍🔬 Authors
 
 HapTune was developed by **[Mudassir Ibrahim Awan](https://scholar.google.com/citations?user=DJKWlwoAAAAJ)** to provide the haptics community with a no-code tool for rapid custom haptic signal design and testing.
 
 > 🧭 Acknowledgments:  
 > Special thanks to **[Prof. Seokhee Jeon](http://haptics.khu.ac.kr/jeon/)** for his guidance during the development phase of this tool.
-
+-->
 ---
 
 
